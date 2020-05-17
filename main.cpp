@@ -1,10 +1,10 @@
 #include <iostream>
 #include <fstream>
-
+#include <vector>
+#include <map>
 /*
 Employee Task Delete
 */
-
 using namespace std;
 
 struct Node{
@@ -12,6 +12,15 @@ struct Node{
     Node *next;
     Node *prev;
 };
+
+void mainScr();
+void binarySearch(map<string, int> w);
+void findmax(map<string, int> &v);
+void findMin(map<string, int> &v);
+map<string, int> worker;
+void LoginEmp();
+void NormalEmployee();
+void RegEmp();
 
 class Stack{
     public:
@@ -96,7 +105,6 @@ class Employee{
     private:
         string name;
         string post;
-        double salary;
     public:
         Stack TODO;
         void toDo(string task){
@@ -125,7 +133,13 @@ class Employee{
         }
 };
 
-void NormalEmployee();
+int main()
+{
+    mainScr();
+    cout<<"Thank You!"<<endl;
+    return 0;
+}
+
 void LoginEmp(){
         string usr,pwd, login= "";
         Employee emp;
@@ -144,19 +158,19 @@ void LoginEmp(){
             getline(userfile, post);
             while(!userfile.eof()){
                 getline(userfile, task);
-                emp.toDo(task);
+                if(task == "") ;//
+                else emp.toDo(task);
             }
             userfile.close();
             int op = 1;
-            while(op != 7){
+            while(op != 6){
                 cout<<"\nWhat do you want to do?"<<endl;
                 cout<<"1. Add ToDo"<<endl;
                 cout<<"2. View ToDo"<<endl;
                 cout<<"3. Delete ToDo"<<endl;
                 cout<<"4. Edit Task"<<endl;
                 cout<<"5. See details"<<endl;
-                cout<<"6. Task Transfer"<<endl;
-                cout<<"7. Exit"<<endl;
+                cout<<"6. Exit"<<endl;
                 cout<<"Ans : ";
                 cin>>op;
                 cin.ignore(100,'\n');
@@ -178,9 +192,9 @@ void LoginEmp(){
                 else if(op == 4){
                     string New, Old;
                     cout<<"What task do you want to edit : ";
-                    getline(cin,New);
+                    getline(cin,Old);
                     cout<<"What is the new task : ";
-                    getline(cin, Old);
+                    getline(cin, New);
                     emp.editTodo(Old, New);
                 }
                 else if(op == 5){
@@ -189,17 +203,17 @@ void LoginEmp(){
                     cout<<"Name : "<<emp.getname()<<endl;
                     cout<<"Post : "<<emp.getpost()<<endl;
                 }
-                else if(op == 6){
-                    //task transfer
+                else{
+                    break;
                 }
             }
             userfile.open(login);
             if(userfile.is_open()){
-                userfile<<name<<endl;
-                userfile<<post<<endl;
+                userfile<<name<<"\n";
+                userfile<<post<<"\n";
                 string bro = emp.TODO.Pop();
                 while(bro != "no"){
-                    userfile<<bro<<endl;
+                    userfile<<"\n"<<bro;
                     bro = emp.TODO.Pop();
                 }
             }
@@ -209,20 +223,58 @@ void LoginEmp(){
             userfile.close();
             NormalEmployee();
         }
+        else if(login == "00"){
+            NormalEmployee();
+        }
         else{
             cout<<"User not found or incorrect credentials"<<endl;
             LoginEmp();
         }
 }
 
+void HighPerf(){
+//
+}
+void LowPerf(){
+//
+}
+
 void mainScr(){
     int op;
     cout<<"\nWelcome! Type 1 to proceed Type 0 to exit."<<endl;
+    cout<<"Also! You can see who has got more work done and evaluate performance of others!\n";
+    cout<<"Press 3 to see most working person and 4 to see least working person\n";
     cout<<"Ans : ";
     cin>>op;
+    cin.ignore(100,'\n');
     if(op == 1) NormalEmployee();
+    else if(op == 2) HighPerf();
+    else if(op == 3) LowPerf();
     else if(op == 0) return;
     else mainScr();
+}
+
+void RegEmp(){
+    string name, post, username, pass, login;
+    cout<<"Name : ";
+    getline(cin,name);
+    cout<<"Post : ";
+    getline(cin,post);
+    cout<<"Username : ";
+    getline(cin,username);
+    cout<<"Password : ";
+    getline(cin,pass);
+    login = username+pass;
+    ofstream MyFile(login);
+    ofstream outfile;
+    cout<<"Done! Press any key to continue"<<endl;
+    MyFile<<name<<endl;
+    MyFile<<post<<endl;
+    outfile.open("database.txt", ios_base::app);
+    outfile<<name<<" "<<0<<endl;
+    outfile.close();
+    getchar();
+    mainScr();
 }
 
 void NormalEmployee(){
@@ -234,15 +286,8 @@ void NormalEmployee(){
     cin>>op;
     cin.ignore(100,'\n');
     if(op == 1) LoginEmp();
-    else if(op == 2);
+    else if(op == 2) RegEmp();
     else if(op == 3){
         mainScr();
     }
-}
-
-int main()
-{
-    mainScr();
-    cout<<"Thank You!"<<endl;
-    return 0;
 }
