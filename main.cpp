@@ -1,27 +1,24 @@
 #include <iostream>
 #include <fstream>
-#include <vector>
-#include <map>
 /*
 Employee Task Delete
 */
 using namespace std;
 
+//1 struct
 struct Node{
     string data;
     Node *next;
     Node *prev;
 };
 
+//4 functions
 void mainScr();
-void binarySearch(map<string, int> w);
-void findmax(map<string, int> &v);
-void findMin(map<string, int> &v);
-map<string, int> worker;
 void LoginEmp();
 void NormalEmployee();
 void RegEmp();
 
+//2 classes with Delete, Add, Edit, View
 class Stack{
     public:
         Node *head = NULL;
@@ -105,6 +102,7 @@ class Employee{
     private:
         string name;
         string post;
+        int task;
     public:
         Stack TODO;
         void toDo(string task){
@@ -232,24 +230,13 @@ void LoginEmp(){
         }
 }
 
-void HighPerf(){
-//
-}
-void LowPerf(){
-//
-}
-
 void mainScr(){
     int op;
     cout<<"\nWelcome! Type 1 to proceed Type 0 to exit."<<endl;
-    cout<<"Also! You can see who has got more work done and evaluate performance of others!\n";
-    cout<<"Press 3 to see most working person and 4 to see least working person\n";
     cout<<"Ans : ";
     cin>>op;
     cin.ignore(100,'\n');
     if(op == 1) NormalEmployee();
-    else if(op == 2) HighPerf();
-    else if(op == 3) LowPerf();
     else if(op == 0) return;
     else mainScr();
 }
@@ -266,13 +253,9 @@ void RegEmp(){
     getline(cin,pass);
     login = username+pass;
     ofstream MyFile(login);
-    ofstream outfile;
     cout<<"Done! Press any key to continue"<<endl;
     MyFile<<name<<endl;
     MyFile<<post<<endl;
-    outfile.open("database.txt", ios_base::app);
-    outfile<<name<<" "<<0<<endl;
-    outfile.close();
     getchar();
     mainScr();
 }
@@ -287,7 +270,5 @@ void NormalEmployee(){
     cin.ignore(100,'\n');
     if(op == 1) LoginEmp();
     else if(op == 2) RegEmp();
-    else if(op == 3){
-        mainScr();
-    }
+    else if(op == 3) mainScr();
 }
