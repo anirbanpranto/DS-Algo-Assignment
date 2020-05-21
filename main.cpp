@@ -147,7 +147,7 @@ void LoginEmp(){
         cin>>pwd;
         login = usr+pwd;
         fstream userfile;
-        userfile.open(login);
+        userfile.open(login.c_str());
         if(userfile.is_open()){
             string task;
             string name;
@@ -205,7 +205,7 @@ void LoginEmp(){
                     break;
                 }
             }
-            userfile.open(login);
+            userfile.open(login.c_str());
             if(userfile.is_open()){
                 userfile<<name<<"\n";
                 userfile<<post<<"\n";
@@ -252,7 +252,7 @@ void RegEmp(){
     cout<<"Password : ";
     getline(cin,pass);
     login = username+pass;
-    ofstream MyFile(login);
+    ofstream MyFile(login.c_str());
     cout<<"Done! Press any key to continue"<<endl;
     MyFile<<name<<endl;
     MyFile<<post<<endl;
