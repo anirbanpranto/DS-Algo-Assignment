@@ -55,7 +55,7 @@ class Stack{
             }
         }
         
-        //Linear Search (Algorithm 1)
+        //Linear Search (Algorithm 3)
         void Delete(string item){
             bool ok = false;
             Node *temp = head;
