@@ -30,7 +30,7 @@ void bsort(vector<struct User> &);
 string bsearch(string);
 void transfer_task(string, string);
 
-//2 classes with Delete, Add, Edit, View
+//2 classes with Delete, Push, Edit, View, Pop 
 class Stack{
     public:
         Node *head = NULL;
@@ -54,6 +54,8 @@ class Stack{
                 return "no";
             }
         }
+        
+        //Linear Search (Algorithm 1)
         void Delete(string item){
             bool ok = false;
             Node *temp = head;
@@ -82,7 +84,8 @@ class Stack{
             if(ok) cout<<"Done!"<<endl;
             else cout<<"Task does not exist!"<<endl;
         }
-
+        
+        //Linear Search (Algorithm 3)
         void Edit(string item, string New){
             bool ok = false;
             Node *temp = head;
@@ -143,13 +146,14 @@ class Employee{
         }
 };
 
+//swap algorithm
 void swap(User &a, User &b){
     User temp = a;
     a = b;
     b = temp;
 }
 
-//Bubble Sort
+//Bubble Sort(Algorithm 1)
 void bsort(vector<User> &v){
     for(int i = 0; i < v.size(); i++){
         for(int j = 0; j < v.size()-1; j++){
@@ -160,7 +164,7 @@ void bsort(vector<User> &v){
     }
 }
 
-//Binary search
+//Binary search(Algorithm 2)
 string bsearch(string name){
     bsort(v);
     int first = 0;
