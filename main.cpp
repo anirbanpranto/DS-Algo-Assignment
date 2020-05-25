@@ -1,31 +1,35 @@
 #include <iostream>
 #include <fstream>
 #include <vector>
-/*
-Employee Task Delete
-*/
+
 using namespace std;
 
-//1 struct
+//Node of a linked list
 struct Node{
     string data;
     Node *next;
     Node *prev;
 };
 
+//For the company database
 struct User{
     //holdup
     string name;
     string login;
 };
 
+//Array to store information in the Company Database
 vector<struct User> v;
-//4 functions
+
+//function headers
 void mainScr();
 void LoginEmp();
 void NormalEmployee();
 void RegEmp();
+void bsort(vector<struct User> &);
 string bsearch(string);
+void transfer_task(string, string);
+
 //2 classes with Delete, Add, Edit, View
 class Stack{
     public:
@@ -145,6 +149,7 @@ void swap(User &a, User &b){
     b = temp;
 }
 
+//Bubble Sort
 void bsort(vector<User> &v){
     for(int i = 0; i < v.size(); i++){
         for(int j = 0; j < v.size()-1; j++){
@@ -155,6 +160,7 @@ void bsort(vector<User> &v){
     }
 }
 
+//Binary search
 string bsearch(string name){
     bsort(v);
     int first = 0;
@@ -180,6 +186,7 @@ string bsearch(string name){
     else return "None";
 }
 
+//Transfering Tasks among employees
 void transfer_task(string item, string user){
     string log = bsearch(user);
     if(log == "None"){
@@ -214,14 +221,17 @@ int main()
     return 0;
 }
 
+//Login session of an employee
 void LoginEmp(){
         string usr,pwd, login= "";
         Employee emp;
+        cout<<"Write 00 for both username and password to return to previous screen."<<endl;
         cout<<"Username : ";
-        cin>>usr;
+        getline(cin,usr);
         cout<<"Password : ";
-        cin>>pwd;
+        getline(cin,pwd);
         login = usr+pwd;
+        if(login == "0000") return;
         fstream userfile;
         userfile.open(login.c_str());
         if(userfile.is_open()){
@@ -236,35 +246,34 @@ void LoginEmp(){
                 else emp.toDo(task);
             }
             userfile.close();
-            int op = 1;
-            while(op != 6){
+            string op = "";
+            while(true){
                 cout<<"\nWhat do you want to do?"<<endl;
                 cout<<"1. Add ToDo"<<endl;
                 cout<<"2. View ToDo"<<endl;
                 cout<<"3. Delete ToDo"<<endl;
                 cout<<"4. Edit Task"<<endl;
                 cout<<"5. See details"<<endl;
-                cout<<"6. Transfer Task"<<endl;
+                cout<<"6. Transfer Task(Session Closes after you perform it)"<<endl;
                 cout<<"7. Exit"<<endl;
                 cout<<"Ans : ";
-                cin>>op;
-                cin.ignore(100,'\n');
-                if(op==1){
+                getline(cin,op);
+                if(op=="1"){
                     string random;
                     cout<<"Add Todo : ";
                     getline(cin,random);
                     emp.toDo(random);
                 }
-                else if(op == 2){
+                else if(op == "2"){
                     emp.seeToDo();
                 }
-                else if(op == 3){
+                else if(op == "3"){
                     string random;
                     cout<<"What task do you want to delete : ";
                     getline(cin,random);
                     emp.deleteToDo(random);
                 }
-                else if(op == 4){
+                else if(op == "4"){
                     string New, Old;
                     cout<<"What task do you want to edit : ";
                     getline(cin,Old);
@@ -272,13 +281,13 @@ void LoginEmp(){
                     getline(cin, New);
                     emp.editTodo(Old, New);
                 }
-                else if(op == 5){
+                else if(op == "5"){
                     emp.setname(name);
                     emp.setpost(post);
                     cout<<"Name : "<<emp.getname()<<endl;
                     cout<<"Post : "<<emp.getpost()<<endl;
                 }
-                else if(op == 6){
+                else if(op == "6"){
                     string trans, receipant;
                     cout<<"Which task do you want to transfer :";
                     getline(cin,trans);
@@ -286,8 +295,11 @@ void LoginEmp(){
                     getline(cin,receipant);
                     transfer_task(trans,receipant);
                 }
-                else if(op == 7){
+                else if(op == "7"){
                     break;
+                }
+                else{
+                    continue;
                 }
             }
             userfile.open(login.c_str());
@@ -304,7 +316,7 @@ void LoginEmp(){
                 cout<<"An error occured"<<endl;
             }
             userfile.close();
-            NormalEmployee();
+            LoginEmp();
         }
         else if(login == "00"){
             NormalEmployee();
@@ -315,17 +327,18 @@ void LoginEmp(){
         }
 }
 
+//Main screen/Start screen
 void mainScr(){
-    int op;
+    string op;
     cout<<"\nWelcome! Type 1 to proceed Type 0 to exit."<<endl;
     cout<<"Ans : ";
-    cin>>op;
-    cin.ignore(100,'\n');
-    if(op == 1) NormalEmployee();
-    else if(op == 0) return;
+    getline(cin,op);
+    if(op == "1") NormalEmployee();
+    else if(op == "0") exit;
     else mainScr();
 }
 
+//Employee Registration
 void RegEmp(){
     string name, post, username, pass, login;
     cout<<"Name : ";
@@ -338,7 +351,6 @@ void RegEmp(){
     getline(cin,pass);
     login = username+pass;
     ofstream MyFile(login.c_str());
-    cout<<"Done! Press any key to continue"<<endl;
     MyFile<<name<<endl;
     MyFile<<post<<endl;
     User dummy;
@@ -349,10 +361,12 @@ void RegEmp(){
     for(auto it:v){
         init<<it.name<<" "<<it.login<<endl;
     }
+    cout<<"Done! Press any key to continue"<<endl;
     getchar();
     mainScr();
 }
 
+//Options
 void NormalEmployee(){
     ifstream init("data");
     string data;
@@ -363,14 +377,14 @@ void NormalEmployee(){
         dummy.login = log;
         v.push_back(dummy);
     }
-    int op;
+    string op;
     cout<<"1. Login"<<endl;
     cout<<"2. Register"<<endl;
     cout<<"3. Exit"<<endl;
     cout<<"Ans : ";
-    cin>>op;
-    cin.ignore(100,'\n');
-    if(op == 1) LoginEmp();
-    else if(op == 2) RegEmp();
-    else if(op == 3) mainScr();
+    getline(cin,op);
+    if(op == "1") LoginEmp();
+    else if(op == "2") RegEmp();
+    else if(op == "3") return;
+    NormalEmployee();
 }
