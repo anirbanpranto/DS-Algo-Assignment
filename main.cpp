@@ -1,5 +1,6 @@
 #include <iostream>
 #include <fstream>
+#include <vector>
 /*
 Employee Task Delete
 */
@@ -12,12 +13,19 @@ struct Node{
     Node *prev;
 };
 
+struct User{
+    //holdup
+    string name;
+    string login;
+};
+
+vector<struct User> v;
 //4 functions
 void mainScr();
 void LoginEmp();
 void NormalEmployee();
 void RegEmp();
-
+string bsearch(string);
 //2 classes with Delete, Add, Edit, View
 class Stack{
     public:
@@ -131,6 +139,74 @@ class Employee{
         }
 };
 
+void swap(User &a, User &b){
+    User temp = a;
+    a = b;
+    b = temp;
+}
+
+void bsort(vector<User> &v){
+    for(int i = 0; i < v.size(); i++){
+        for(int j = 0; j < v.size()-1; j++){
+            if(v[j].name > v[j+1].name){
+                swap(v[j],v[j+1]);
+            }
+        }
+    }
+}
+
+string bsearch(string name){
+    bsort(v);
+    int first = 0;
+    int last = v.size()-1;
+    int mid;
+    bool found = false;
+    while(!found && first<=last){
+        mid = (first+last)/2;
+        if(v[mid].name == name){
+            found = !found;
+            break;
+        }
+        else{
+            if(name<v[mid].name){
+                last = mid - 1;
+            }
+            else{
+                first = mid + 1;
+            }
+        }
+    }
+    if(found) return v[mid].login;
+    else return "None";
+}
+
+void transfer_task(string item, string user){
+    string log = bsearch(user);
+    if(log == "None"){
+        cout<<"No such user"<<endl;
+        return;
+    }
+    else{
+        fstream user;
+        user.open(log.c_str());
+        vector<string> info;
+        string data;
+        while(getline(user,data)){
+            info.push_back(data);
+        }
+        info.push_back(item);
+        for(auto it:info){
+            cout<<it<<endl;
+        }
+        user.close();
+        user.open(log.c_str());
+        for(auto it:info){
+            user<<it<<endl;
+        }
+        user.close();
+    }
+}
+
 int main()
 {
     mainScr();
@@ -168,7 +244,8 @@ void LoginEmp(){
                 cout<<"3. Delete ToDo"<<endl;
                 cout<<"4. Edit Task"<<endl;
                 cout<<"5. See details"<<endl;
-                cout<<"6. Exit"<<endl;
+                cout<<"6. Transfer Task"<<endl;
+                cout<<"7. Exit"<<endl;
                 cout<<"Ans : ";
                 cin>>op;
                 cin.ignore(100,'\n');
@@ -201,7 +278,15 @@ void LoginEmp(){
                     cout<<"Name : "<<emp.getname()<<endl;
                     cout<<"Post : "<<emp.getpost()<<endl;
                 }
-                else{
+                else if(op == 6){
+                    string trans, receipant;
+                    cout<<"Which task do you want to transfer :";
+                    getline(cin,trans);
+                    cout<<"Who do you want to transfer it to : ";
+                    getline(cin,receipant);
+                    transfer_task(trans,receipant);
+                }
+                else if(op == 7){
                     break;
                 }
             }
@@ -256,11 +341,28 @@ void RegEmp(){
     cout<<"Done! Press any key to continue"<<endl;
     MyFile<<name<<endl;
     MyFile<<post<<endl;
+    User dummy;
+    dummy.name = name;
+    dummy.login = login;
+    v.push_back(dummy);
+    ofstream init("data");
+    for(auto it:v){
+        init<<it.name<<" "<<it.login<<endl;
+    }
     getchar();
     mainScr();
 }
 
 void NormalEmployee(){
+    ifstream init("data");
+    string data;
+    string log;
+    while(init>>data>>log){
+        User dummy;
+        dummy.name = data;
+        dummy.login = log;
+        v.push_back(dummy);
+    }
     int op;
     cout<<"1. Login"<<endl;
     cout<<"2. Register"<<endl;
