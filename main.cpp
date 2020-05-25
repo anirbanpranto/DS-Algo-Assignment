@@ -55,7 +55,7 @@ class Stack{
             }
         }
         
-        //Linear Search (Algorithm 3)
+        //Linear Search (Algorithm 1)
         void Delete(string item){
             bool ok = false;
             Node *temp = head;
@@ -207,13 +207,13 @@ void transfer_task(string item, string user){
             info.push_back(data);
         }
         info.push_back(item);
-        for(auto it:info){
-            cout<<it<<endl;
+        for(int i = 0; i < info.size(); i++){
+            cout<<info[i]<<endl;
         }
         user.close();
         user.open(log.c_str());
-        for(auto it:info){
-            user<<it<<endl;
+        for(int i = 0; i < info.size(); i++){
+            user<<info[i]<<endl;
         }
         user.close();
     }
@@ -365,8 +365,8 @@ void RegEmp(){
     dummy.login = login;
     v.push_back(dummy);
     ofstream init("data");
-    for(auto it:v){
-        init<<it.name<<" "<<it.login<<endl;
+    for(int i = 0; i < v.size(); i++){
+        init<<v[i].name<<" "<<v[i].login<<endl;
     }
     cout<<"Done! Press any key to continue"<<endl;
     getchar();
