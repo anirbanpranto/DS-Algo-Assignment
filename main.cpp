@@ -192,6 +192,7 @@ string bsearch(string name){
 
 //Transfering Tasks among employees
 void transfer_task(string item, string user){
+    cout<<endl;
     string log = bsearch(user);
     if(log == "None"){
         cout<<"No such user"<<endl;
@@ -227,6 +228,7 @@ int main()
 
 //Login session of an employee
 void LoginEmp(){
+        cout<<endl;
         string usr,pwd, login= "";
         Employee emp;
         cout<<"Write 00 for both username and password to return to previous screen."<<endl;
@@ -344,6 +346,7 @@ void mainScr(){
 
 //Employee Registration
 void RegEmp(){
+    cout<<endl;
     string name, post, username, pass, login;
     cout<<"Name : ";
     getline(cin,name);
@@ -372,6 +375,7 @@ void RegEmp(){
 
 //Options
 void NormalEmployee(){
+    cout<<endl;
     ifstream init("data");
     string data;
     string log;
