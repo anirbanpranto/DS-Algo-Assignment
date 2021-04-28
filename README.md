@@ -1,2 +1,2 @@
 # Employee-ToDoList
-Data Structures and Algorithms assignment. 
+Assignment of my highschool Data Structures and Algorithms class.
